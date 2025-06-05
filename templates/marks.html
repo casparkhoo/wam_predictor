@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Enter Marks & Predict WAM</h2>
+
+<form method="POST">
+  <b>Add a course and mark:</b><br>
+  Course: <input name="course" required>
+  Mark: <input name="mark" type="number" required>
+  Credits: <input name="credit" type="number" required>
+  <button type="submit" name="add">Add</button>
+  {% if add_error %}<span style="color:red;">{{ add_error }}</span>{% endif %}
+</form>
+
+<form method="POST" style="margin-top:16px;">
+  <b>Predict WAM (with all listed marks):</b><br>
+  Course: <input name="course" required>
+  Mark: <input name="mark" type="number" required>
+  Credits: <input name="credit" type="number" required>
+  <button type="submit" name="predict">Predict</button>
+  {% if predict_error %}<span style="color:red;">{{ predict_error }}</span>{% endif %}
+  {% if predicted_wam is not none %}<span style="color:green;">Predicted WAM: {{ predicted_wam }}</span>{% endif %}
+</form>
+
+<h3>Marks</h3>
+{% if marks %}
+  <ul>
+  {% for course, (mark, credit) in marks.items() %}
+    <li>
+      {{course}}: Mark {{mark}}, Credit {{credit}}
+      <form method="POST" style="display:inline">
+        <button type="submit" name="remove" value="{{course}}">Remove</button>
+      </form>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <i>No marks entered</i>
+{% endif %}
+
+<h3>Current WAM (from all listed marks):</h3>
+<p>{{wam}}</p>
+{% endblock %}
