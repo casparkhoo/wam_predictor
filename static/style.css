@@ -1,0 +1,145 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    margin: 0;
+    padding: 0 20px;
+}
+
+h1 {
+    color: #2c3e50;
+}
+
+nav {
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: #2980b9;
+    text-decoration: none;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+form {
+    background: #fff;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px #0001;
+}
+
+input[type="number"], input[type="text"] {
+    padding: 4px 8px;
+    margin: 0 4px 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    background: #2980b9;
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1c5980;
+}
+
+ul {
+    list-style: disc inside;
+}
+
+span[style*="color:red"] {
+    font-weight: bold;
+}
+span[style*="color:green"] {
+    font-weight: bold;
+}
+span[style*="color:blue"] {
+    font-weight: bold;
+}
+
+.remove-btn {
+    padding: 0 12px;
+    font-size: 0.9em;
+    margin-left: 8px;
+    height: 22px;
+    line-height: 1;
+}
+li form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.tool-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 350px;
+    margin: 32px 0;
+}
+
+.tool-link {
+    display: block;
+    background: #2980b9;
+    color: #fff !important;
+    padding: 18px 24px;
+    border-radius: 6px;
+    font-size: 1.15em;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 2px 8px #0001;
+    transition: background 0.2s;
+    margin-bottom: 0;
+    border: none;
+    cursor: pointer;
+}
+
+.tool-link:hover {
+    background: #1c5980;
+}
+
+.nav-btn {
+    display: inline-block;
+    background: #2980b9;
+    color: #fff !important;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 1em;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 10px;
+    box-shadow: 0 2px 8px #0001;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-btn:hover {
+    background: #1c5980;
+    text-decoration: none;
+}
+.main-container {
+    max-width: 850px;
+    width: 50vw;
+    min-width: 320px;
+    margin: 20px auto 0 auto;
+    background: #ffffff;
+    padding: 32px 32px 24px 32px;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px #0002;
+}

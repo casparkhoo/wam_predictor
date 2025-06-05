@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Predict WAM from Overall</h2>
+<h2>Predict WAM from Totals</h2>
 
 <form method="POST">
   <b>Set current overall WAM and units of credit:</b><br>
@@ -15,10 +15,15 @@
 {% endif %}
 
 <form method="POST" style="margin-top:16px;">
-  <b>Predict WAM (with just your overall WAM and UOC):</b><br>
-  Mark: <input name="mark" type="number" required>
-  Credits: <input name="credit" type="number" required>
-  <button type="submit" name="predict_overall">Predict from Overall</button>
+  <b>Predict WAM:</b><br>
+  {% for i in range(3) %}
+    <div style="margin-bottom:8px;">
+      Course: <input name="overall_predict_course{{i}}" type="text">
+      Mark: <input name="overall_predict_mark{{i}}" type="number">
+      Credits: <input name="overall_predict_credit{{i}}" type="number">
+    </div>
+  {% endfor %}
+  <button type="submit" name="predict_overall_multi">Predict</button>
   {% if predict_overall_error %}<span style="color:red;">{{ predict_overall_error }}</span>{% endif %}
   {% if predicted_overall_wam is not none %}<span style="color:green;">Predicted WAM: {{ predicted_overall_wam }}</span>{% endif %}
 </form>

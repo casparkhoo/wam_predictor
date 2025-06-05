@@ -35,6 +35,23 @@ def marks():
                     predict_error = f"Mark for course {course} already exists."
                 else:
                     predicted_wam = f"{predicted:.2f}"
+        elif "predict_multi" in request.form:
+            # Gather up to 3 new courses
+            new_courses = []
+            for i in range(3):
+                cname = request.form.get(f"predict_course{i}", "").strip()
+                cmark = parse_int(request.form.get(f"predict_mark{i}", ""), "mark")
+                ccredit = parse_int(request.form.get(f"predict_credit{i}", ""), "credit")
+                if cname and cmark is not None and ccredit is not None:
+                    new_courses.append((cname, cmark, ccredit))
+            if not new_courses:
+                predict_error = "Enter at least one valid course, mark, and credit."
+            else:
+                predicted = calculator.predict_multiple_marks(new_courses)
+                if predicted is None:
+                    predict_error = "One of the courses already exists."
+                else:
+                    predicted_wam = f"{predicted:.2f}"
         elif "remove" in request.form:
             course = request.form.get("remove", "").strip()
             calculator.remove_mark(course)
@@ -77,6 +94,23 @@ def overall():
                 predict_overall_error = "Check your inputs."
             else:
                 predicted = calculator.predict_from_current(mark, credit)
+                if predicted is None:
+                    predict_overall_error = "Set your current WAM and units of credit first."
+                else:
+                    predicted_overall_wam = f"{predicted:.2f}"
+        elif "predict_overall_multi" in request.form:
+            # Gather up to 3 new courses
+            new_courses = []
+            for i in range(3):
+                cname = request.form.get(f"overall_predict_course{i}", "").strip()
+                cmark = parse_int(request.form.get(f"overall_predict_mark{i}", ""), "mark")
+                ccredit = parse_int(request.form.get(f"overall_predict_credit{i}", ""), "credit")
+                if cname and cmark is not None and ccredit is not None:
+                    new_courses.append((cname, cmark, ccredit))
+            if not new_courses:
+                predict_overall_error = "Enter at least one valid course, mark, and credit."
+            else:
+                predicted = calculator.predict_multiple_from_current(new_courses)
                 if predicted is None:
                     predict_overall_error = "Set your current WAM and units of credit first."
                 else:

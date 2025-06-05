@@ -59,6 +59,33 @@ class Calculator:
         total_credit = self.current_uoc + credit
         return total_mark / total_credit if total_credit > 0 else 0.0
 
+    def predict_multiple_marks(self, new_courses: list[tuple[str, int, int]]) -> float | None:
+        # Check for duplicates
+        for cname, _, _ in new_courses:
+            if cname in self.marks:
+                return None
+        # Calculate WAM as if these courses were added
+        total_mark = sum(mark * credit for mark, credit in self.marks.values())
+        total_credit = sum(credit for _, credit in self.marks.values())
+        for cname, mark, credit in new_courses:
+            total_mark += mark * credit
+            total_credit += credit
+        if total_credit == 0:
+            return 0.0
+        return total_mark / total_credit
+
+    def predict_multiple_from_current(self, new_courses: list[tuple[str, int, int]]) -> float | None:
+        if self.current_wam is None or self.current_uoc is None:
+            return None
+        total_mark = self.current_wam * self.current_uoc
+        total_credit = self.current_uoc
+        for cname, mark, credit in new_courses:
+            total_mark += mark * credit
+            total_credit += credit
+        if total_credit == 0:
+            return 0.0
+        return total_mark / total_credit
+
 def parse_int(value: str, name: str) -> int | None:
     try:
         return int(value)

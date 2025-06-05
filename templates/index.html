@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>Choose a tool:</h2>
-<ul>
-    <li><a href="{{ url_for('marks') }}">Enter marks and predict WAM</a></li>
-    <li><a href="{{ url_for('overall') }}">Predict WAM from overall WAM/UOC</a></li>
-</ul>
+<div class="tool-list">
+    <a class="tool-link" href="{{ url_for('marks') }}">Predict WAM from Marks</a>
+    <a class="tool-link" href="{{ url_for('overall') }}">Predict WAM from Totals</a>
+</div>
 {% endblock %}
