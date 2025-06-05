@@ -1,11 +1,13 @@
 class Calculator:
-    def __init__(self):
+    marks: dict[str, tuple[int, int]]
+
+    def __init__(self) -> None:
         self.marks = {}
 
-    def add_mark(self, course: int, mark: int, credit: int) -> bool:
-        if self.marks.get(course):
+    def add_mark(self, course: str, mark: int, credit: int) -> bool:
+        if course in self.marks:
             return False
-        self.marks[course] = (int(mark), int(credit))
+        self.marks[course] = (mark, credit)
         return True
 
     def remove_mark(self, course: str) -> bool:
@@ -15,71 +17,84 @@ class Calculator:
         return True
 
     def print_marks(self) -> None:
-        if len(self.marks) == 0:
+        if not self.marks:
             print("No marks entered")
             return
         print("Mark Summary:")
-        i = 0
-        for entry in self.marks:
-            i += 1
-            print(f"{i}) Course code: {entry} Mark: {self.marks[entry][0]}, Credits: {self.marks[entry][1]}")
+        for i, (course, (mark, credit)) in enumerate(self.marks.items(), start=1):
+            print(f"{i}) Course code: {course} Mark: {mark}, Credits: {credit}")
 
     def calculate_wam(self) -> float:
-        """
-        - Input: List of tuples containing (mark, credits)
-        - Output: Weighted Average Mark (WAM)
-        """
         total_mark = 0
         total_credit = 0
-        for entry in self.marks:
-            total_mark += self.marks[entry][0] * self.marks[entry][1]
-            total_credit += self.marks[entry][1]
-        return total_mark / total_credit
+        for mark, credit in self.marks.values():
+            total_mark += mark * credit
+            total_credit += credit
+        return total_mark / total_credit if total_credit > 0 else 0.0
 
-    def predict_marks(self, course: int, mark: int, credit: int) -> bool:
+    def predict_marks(self, course: str, mark: int, credit: int) -> bool:
         add = self.add_mark(course, mark, credit)
-        if add == False:
-            print("Error: mark already entered for course: {course}")
+        if not add:
+            print(f"Error: mark already entered for course: {course}")
             return False
-        print(f"Predicted: {self.calculate_wam()}")
-        rem = self.remove_mark(course)
+        print(f"Predicted: {self.calculate_wam():.2f}")
+        self.remove_mark(course)
         return True
 
-
-
+def parse_int(value: str, name: str) -> int | None:
+    try:
+        return int(value)
+    except ValueError:
+        print(f"Invalid {name}: {value}")
+        return None
 
 if __name__ == "__main__":
     calculator = Calculator()
     while True:
         user_input = input("Enter something (or 'exit' to quit): ")
-        split = user_input.split(" ")
-        if split[0] == 'exit':
-            break
-        elif split[0] == 'add':
-            res = calculator.add_mark(split[1], split[2], split[3])
-            if res == False:
-                print("!! Error adding mark")
-            else:
-                print(f"Added mark for course {split[1]}")
-        elif split[0] == 'print':
-            calculator.print_marks()
-        elif split[0] == 'calculate':
-            print(calculator.calculate_wam())
-        elif split[0] == 'remove':
-            res = calculator.remove_mark(split[1])
-            if res == False:
-                print("!! Error removing mark")
-            else:
-                print(f"Removed mark for course {split[1]}")
-        elif split[0] == 'predict':
-            calculator.predict_marks(split[1], split[2], split[3])
-    # calculator.add_mark("COMP1511", 75, 6)
-    # calculator.print_marks()
-    # print(calculator.calculate_wam())
-    # calculator.predict_marks("COMP2511", 85, 6)
-    # calculator.add_mark("COMP2521", 67, 6)
-    # calculator.print_marks()
-    # calculator.remove_mark("COMP1511")
-    # calculator.print_marks()
-
-
+        split = user_input.strip().split()
+        if not split:
+            continue
+        match split[0]:
+            case "exit":
+                break
+            case "add":
+                if len(split) != 4:
+                    print("Usage: add <course> <mark> <credit>")
+                    continue
+                course = split[1]
+                mark = parse_int(split[2], "mark")
+                credit = parse_int(split[3], "credit")
+                if None in (mark, credit):
+                    continue
+                res = calculator.add_mark(course, mark, credit)
+                if not res:
+                    print(f"!! Error adding mark for course {course}")
+                else:
+                    print(f"Added mark for course {course}")
+            case "print":
+                calculator.print_marks()
+            case "calculate":
+                print(calculator.calculate_wam())
+            case "remove":
+                if len(split) != 2:
+                    print("Usage: remove <course>")
+                    continue
+                course = split[1]
+                res = calculator.remove_mark(course)
+                if not res:
+                    print(f"!! Error removing mark for course {course}")
+                else:
+                    print(f"Removed mark for course {course}")
+            case "predict":
+                if len(split) != 4:
+                    print("Usage: predict <course> <mark> <credit>")
+                    continue
+                course = split[1]
+                mark = parse_int(split[2], "mark")
+                credit = parse_int(split[3], "credit")
+                if None in (mark, credit):
+                    continue
+                calculator.predict_marks(course, mark, credit)
+            case _:
+                print(f"Unknown command: {split[0]}")
