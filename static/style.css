@@ -134,9 +134,9 @@ ul {
     text-decoration: none;
 }
 .main-container {
-    max-width: 850px;
-    width: 50vw;
-    min-width: 320px;
+    max-width: 900px;
+    width: 70vw;
+    min-width: 450px;
     margin: 20px auto 0 auto;
     background: #ffffff;
     padding: 32px 32px 24px 32px;
